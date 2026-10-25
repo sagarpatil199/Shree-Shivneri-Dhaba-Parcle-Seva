@@ -1,0 +1,65 @@
+{
+  "name": "Hotel Ruchkar Katta",
+  "tagline": "Family Dining",
+  "description": "Hotel Ruchkar Katta serving traditional Maharashtrian, Gavran, mutton, chicken, egg and vegetarian specialities.",
+  "logo": "assets/logo/Hotel Ruchkar Katta Family Dining Badge.png",
+  "coverImage": "",
+
+  "phone": "9535758777",
+  "whatsapp": "9535758777",
+  "whatsappMessage": "Hello Hotel Ruchkar Katta! I saw your digital menu and would like to know more.",
+  "email": "ruchkarkatta@gmail.com",
+
+  "address": "Hotel Ruchkar Katta Family Restaurant, hukkeri road, beside Siddhi Tiles, opposite mahalaxmi aluminium, Sankeshwar, Kamatnur, Karnataka 591340",
+  "googleMapsUrl": "https://maps.app.goo.gl/FEtMbmHaMPspXxGUA",
+  "googleReviewUrl": "https://www.google.com/searchviewer/10?svid=CAwSHRIbCgNwdnESFENnMHZaeTh4TVhGdU56VXphR2czGAo",
+
+  "instagram": "https://share.google/8eo8nTlSW2hRTM7PE",
+  "facebook": "https://www.facebook.com/rucharkatta/",
+  "website": "https://www.google.com/searchviewer/10?svid=CAwSHRIbCgNwdnESFENnMHZaeTh4TVhGdU56VXphR2czGAo",
+
+  "currency": "₹",
+  "cuisine": [
+    "Maharashtrian",
+    "Gavran",
+    "Mutton",
+    "Chicken",
+    "Vegetarian"
+  ],
+  "priceRange": "₹₹",
+
+  "notice": "Prices are subject to change. Please inform our staff about any food allergies.",
+  "footerNote": "Menu prices and availability may change without notice.",
+
+  "timezone": "Asia/Kolkata",
+
+  "openingHours": [
+  { "day": "Monday", "open": "12:30", "close": "15:30" },
+  { "day": "Monday", "open": "19:00", "close": "23:00" },
+
+  { "day": "Tuesday", "open": "12:30", "close": "15:30" },
+  { "day": "Tuesday", "open": "19:00", "close": "23:00" },
+
+  { "day": "Wednesday", "open": "12:30", "close": "15:30" },
+  { "day": "Wednesday", "open": "19:00", "close": "23:00" },
+
+  { "day": "Thursday", "open": "12:30", "close": "15:30" },
+  { "day": "Thursday", "open": "19:00", "close": "23:00" },
+
+  { "day": "Friday", "open": "12:30", "close": "15:30" },
+  { "day": "Friday", "open": "19:00", "close": "23:00" },
+
+  { "day": "Saturday", "open": "12:30", "close": "15:30" },
+  { "day": "Saturday", "open": "19:00", "close": "23:00" },
+
+  { "day": "Sunday", "open": "12:30", "close": "15:30" },
+  { "day": "Sunday", "open": "19:00", "close": "23:00" }
+],
+
+  "siteUrl": "https://sagarpatil199.github.io/Hotel-Ruchkar-Katta",
+
+  "theme": {
+    "primary": "#7A1F1F",
+    "secondary": "#FFF7ED"
+  }
+}
