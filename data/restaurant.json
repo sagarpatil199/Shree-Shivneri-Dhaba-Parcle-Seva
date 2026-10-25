@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "श्री शिवनेरी ढाबा",
   "altName": "Shree Shivneri Dhaba",
   "tagline": "Parcel Seva",
@@ -19,6 +20,35 @@
   "cuisine": [
     "Maharashtrian",
     "Vegetarian"
+=======
+  "name": "Shree Shivneri Dhaba",
+  "tagline": "Parcel Seva",
+  "description": "Shree Shivneri Dhaba offering vegetarian curries, paneer specialities, dal, roti, rice and biryani.",
+  "logo": "",
+  "coverImage": "",
+
+  "phone": "7079611555",
+  "whatsapp": "7079611555",
+  "whatsappMessage": "Hello Shree Shivneri Dhaba! I saw your digital menu and would like to know more.",
+  "email": "",
+
+  "address": "",
+  "googleMapsUrl": "",
+  "googleReviewUrl": "",
+
+  "instagram": "",
+  "facebook": "",
+  "website": "",
+
+  "currency": "₹",
+  "cuisine": [
+    "Indian",
+    "Vegetarian",
+    "Paneer",
+    "Dal",
+    "Rice",
+    "Biryani"
+>>>>>>> d2a9d42c8e389fc2eab63540c36e1fee9ec53eb9
   ],
   "priceRange": "",
   "announcements": [
@@ -29,6 +59,7 @@
   "notice": "शुद्ध शाकाहारी · आख्खा मसुर स्पेशल",
   "footerNote": "सर्वोत्तम दर्जा... हाच आमचा ध्यास...",
   "timezone": "Asia/Kolkata",
+<<<<<<< HEAD
   "openingHours": [],
   "siteUrl": "",
   "theme": {
@@ -38,4 +69,25 @@
     "logoShape": "rounded"
   },
   "contentLang": "mr"
+=======
+
+  "openingHours": [],
+
+  "siteUrl": "",
+
+  "theme": {
+    "primary": "#8B0000",
+    "secondary": "#FFF0C9"
+  },
+
+  "announcement": {
+    "enabled": true,
+    "messages": [
+      "🙏 Welcome to Shree Shivneri Dhaba!",
+      "🍛 Explore our delicious menu.",
+      "📞 For enquiries, call 7079611555."
+    ],
+    "speedSeconds": 32
+  }
+>>>>>>> d2a9d42c8e389fc2eab63540c36e1fee9ec53eb9
 }
