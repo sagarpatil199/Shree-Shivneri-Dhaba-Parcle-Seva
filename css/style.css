@@ -29,8 +29,9 @@
   --ok: #1b7f3b;
 
   /* Type */
-  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Noto Serif", serif;
+  /* Devanagari fonts are listed so Marathi text uses a proper system font on every phone. */
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Noto Sans Devanagari", "Kohinoor Devanagari", "Nirmala UI", "Mangal", sans-serif;
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Noto Serif", "Noto Serif Devanagari", "Kohinoor Devanagari", "Nirmala UI", serif;
 
   /* Shape & depth */
   --radius: 18px;
@@ -436,6 +437,48 @@ svg { width: 1em; height: 1em; flex-shrink: 0; }
   gap: 12px;
   margin-top: 14px;
 }
+
+/* ---------- Sub titles inside a category (e.g. "Veg Starters") ---------- */
+
+.subcat { margin-top: 22px; }
+.subcat:first-of-type { margin-top: 14px; }
+.subcat__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary-ink);
+  letter-spacing: 0.01em;
+}
+.subcat__title::before {
+  content: "";
+  width: 4px;
+  height: 1.05em;
+  border-radius: 2px;
+  background: var(--accent);
+  flex: none;
+}
+.subcat__title::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--line), transparent);
+}
+.subcat__count {
+  order: 3;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-3);
+  background: var(--primary-soft);
+  border-radius: 999px;
+  padding: 2px 8px;
+  min-width: 1.6em;
+  text-align: center;
+}
+.subcat > .grid { margin-top: 10px; }
 
 /* ---------- Food card ---------- */
 
@@ -902,6 +945,122 @@ body.is-loading .toolbar { visibility: hidden; }
   }
 }
 
+/* ---------- Announcement ticker ---------- */
+
+.hero.has-ticker { padding-top: 0; }
+
+.ticker {
+  position: relative;
+  margin: 0 calc(var(--gutter) * -1) 22px;
+  padding-top: env(safe-area-inset-top);
+  overflow: hidden;
+  color: var(--on-primary);
+  background: rgba(0, 0, 0, 0.22);
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  /* Soft fade at both edges */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+}
+.ticker__track {
+  display: flex;
+  width: max-content;
+  animation: ticker var(--ticker-duration, 24s) linear infinite;
+}
+.ticker:hover .ticker__track,
+.ticker:focus-within .ticker__track { animation-play-state: paused; }
+.ticker__group {
+  flex: none;
+  display: flex;
+  justify-content: space-around;
+  min-width: 100vw;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ticker__item {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 22px;
+  white-space: nowrap;
+}
+.ticker__item::after {
+  content: "";
+  width: 5px; height: 5px;
+  margin-left: 44px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker__track { animation: none !important; width: auto; justify-content: center; }
+  .ticker__group { flex-wrap: wrap; justify-content: center; min-width: 0; }
+  .ticker__group[aria-hidden="true"] { display: none; }
+  .ticker__item::after { display: none; }
+}
+
+/* ---------- Bilingual names & badge logo ---------- */
+
+.hero__altname {
+  margin-top: 4px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  color: color-mix(in srgb, var(--accent) 70%, #fff);
+}
+.hero__name[lang="mr"] { line-height: 1.35; letter-spacing: 0; }
+
+.card__title[lang="mr"],
+.modal__title[lang="mr"] { line-height: 1.45; }
+.card__alt,
+.modal__alt {
+  margin-top: -3px;
+  font-size: 0.8rem;
+  color: var(--ink-3);
+  letter-spacing: 0.01em;
+}
+.modal__alt { margin-top: 2px; font-size: 0.92rem; }
+.category__title[lang="mr"] { line-height: 1.4; }
+
+.logo-rounded .hero__logo {
+  width: 104px;
+  height: 104px;
+  border-radius: 22px;
+  background: #fcfcfc; /* matches the logo artwork background */
+  padding: 6px;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 70%, transparent), 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Menus without photos: compact two-column text cards on phones */
+.grid:not(:has(.card:not(.card--text))) {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 158px), 1fr));
+  gap: 10px;
+}
+.card--text { padding: 12px 14px; }
+.card--text .card__body { gap: 4px; }
+.card--text .card__title { font-size: 1.02rem; }
+.card--text .card__price { padding-top: 6px; }
+.card--text .price { color: var(--primary-ink); }
+.card--text::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 14px; bottom: 14px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--accent);
+  opacity: 0.85;
+}
+
 /* ---------- Larger screens ---------- */
 
 @media (min-width: 400px) {
@@ -912,8 +1071,10 @@ body.is-loading .toolbar { visibility: hidden; }
   :root { --gutter: 24px; }
   .hero { padding-top: 48px; padding-bottom: 32px; border-radius: 0 0 40px 40px; }
   .hero__logo { width: 112px; height: 112px; }
+  .logo-rounded .hero__logo { width: 124px; height: 124px; }
   .hero__actions { max-width: 460px; }
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .grid:not(:has(.card:not(.card--text))) { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
   .info__grid { grid-template-columns: 1fr 1fr; }
   .filters { margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; flex-wrap: wrap; }
   .catnav__list { padding-left: var(--gutter); }

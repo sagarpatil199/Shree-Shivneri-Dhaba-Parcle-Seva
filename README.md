@@ -1,285 +1,139 @@
-# QR Menu
+# श्री शिवनेरी ढाबा — Shree Shivneri Dhaba (Parcel Seva) · QR Menu
 
-A premium, mobile-first **digital restaurant menu** that runs as a plain static website on **GitHub Pages**.
-Customers scan a QR code on the table and see the full menu with photos, prices, veg/non-veg marks and
-today's availability.
+Digital QR menu for **Shree Shivneri Dhaba**, built from the Hotel Ruchkar Katta QR-menu template.
+Plain static site (HTML, CSS, vanilla JS) for **GitHub Pages**: no build step, no server, no external requests.
 
-This repository is a **reusable master template**: every restaurant gets its own copy, and only the data,
-images and colours change. No build step, no server, no database, no monthly hosting cost.
+This is a **separate project**. It shares no files, links or data with the Ruchkar Katta repository or website.
 
-**Live demo data:** *Hotel Shivneri*, 8 categories, 56 dishes.
-
----
-
-## Features
-
-**For diners (mobile-first)**
-- Branded header with logo, name, tagline and a live **Open now / Closed now** label
-- One-tap **Call**, **WhatsApp** (with a pre-filled message) and **Location** buttons
-- Sticky **search** across dish name, description and category, with a friendly empty state
-- **Filters**: All · Veg · Non-Veg · Available · Bestsellers · New (combine with search)
-- Horizontally scrolling **category tabs** with smooth scroll and automatic active highlighting
-- Food cards with photo, veg/non-veg mark, Bestseller / New / Offer badges, spice level (🌶) and price
-- **Offer prices** (new price with the old one crossed out) and **variations** (Half/Full, Small/Large)
-- **Unavailable dishes stay listed**, greyed out and marked *Currently Unavailable*
-- Dish **detail view** (bottom sheet on phones, dialog on desktop)
-- Footer with address, phone, WhatsApp, maps, social links and an opening-hours table (today highlighted)
-
-**For the restaurant / you**
-- 100% data-driven: `data/restaurant.json` + `data/menu.json` + `assets/`
-- Only two theme colours needed; all other shades and readable text colours are derived automatically
-- Forgiving data model: optional fields have defaults; bad JSON shows a clear error naming the file
-- Menu changes appear within minutes; the **QR code never changes**
-
-**Quality**
-- Plain HTML5, CSS3, vanilla JavaScript. No frameworks, no libraries, no external requests (system fonts,
-  inline SVG icons)
-- Lazy-loaded images with fixed dimensions (no layout jumps), broken images fall back to a placeholder
-- Accessible: semantic landmarks and headings, skip link, keyboard navigation, visible focus, native
-  `<dialog>` modal with focus handling, `aria-pressed` filters, live result count, reduced-motion support
-- SEO: dynamic title/description, Open Graph tags, canonical URL, favicon, theme-color and
-  **schema.org Restaurant + Menu JSON-LD** (with prices and availability)
-- Works at any GitHub Pages address: all paths are relative; self-contained `404.html`
+- Restaurant details: `data/restaurant.json`
+- Menu items and prices: `data/menu.json` (31 items, from the printed menu)
+- Logo: `assets/logo/shree-shivneri-logo.png` (the supplied logo; only the empty white border was trimmed)
+- How to edit the menu yourself: `docs/CUSTOMER_SETUP.md`
 
 ---
 
-## Folder structure
+## What changed from the Ruchkar Katta template
 
-```
-qr-menu/
-├── index.html              Page structure only. Same for every restaurant.
-├── 404.html                Self-contained "page not found" page.
-├── README.md               This file (for you, the template owner).
-├── .nojekyll               Tells GitHub Pages to serve files as-is (faster deploys).
-├── .gitignore
-│
-├── css/
-│   └── style.css           All styling. Brand colours come from restaurant.json.
-│
-├── js/
-│   ├── menu.js             Data layer: load JSON, apply defaults, sort, search & filter logic.
-│   ├── ui.js               Rendering: header, cards, category tabs, modal, footer, hours.
-│   └── app.js              Start-up: theme, SEO/JSON-LD, events, scroll spy.
-│
-├── data/
-│   ├── restaurant.json     ← customer-specific: name, contact, hours, colours
-│   └── menu.json           ← customer-specific: categories and dishes
-│
-├── assets/
-│   ├── logo/               ← customer logo
-│   ├── menu/               ← food photos (demo: illustrated SVG placeholders)
-│   └── icons/              favicon fallback
-│
-└── docs/
-    └── CUSTOMER_SETUP.md   Step-by-step guide for restaurant owners (non-programmers).
-```
+All changes are data-driven. Nothing about this client is hard-coded in the JavaScript.
 
-**Rule:** for a new restaurant, change only `data/`, `assets/logo/` and `assets/menu/`.
-`index.html`, `css/` and `js/` stay identical across all customers, so improvements can be copied into
-every customer repo without touching their data.
+| Change | Where | Configured by |
+| --- | --- | --- |
+| Thin scrolling announcement strip at the top of the header (pauses on hover/tap, static when the phone has "reduce motion" on) | `index.html`, `js/ui.js` → `renderTicker`, `css/style.css` | `announcements` in `restaurant.json` |
+| Second restaurant name under the Marathi name | `index.html`, `js/ui.js` | `altName` |
+| Price shown exactly as printed, e.g. `₹450/270` (the template's numeric `price` would have turned `450/270` into `450270`) | `js/menu.js`, `js/ui.js` → `priceBlock` | `priceText` on an item |
+| English name under each Marathi dish name; English or Marathi search both work | `js/menu.js`, `js/ui.js` | `nameEn` on an item |
+| Correct Marathi font and language tags | `css/style.css`, `js/ui.js` | `contentLang: "mr"` |
+| Logo in a rounded white tile instead of a circle (suits the octagon logo) | `css/style.css`, `js/app.js` | `theme.logoShape: "rounded"` |
+| Filter chips that would not change the list are hidden automatically. On this pure-veg menu every chip (Veg, Non-Veg, Available, Bestsellers, New) is hidden, so the filter row does not show | `js/app.js` → `pruneFilters` | automatic |
+| Compact two-column cards when a section has no photos | `css/style.css` | automatic |
+| Colours: primary `#8B0000`, secondary `#FFF0C9`, gold accent `#C9A227` | — | `theme` |
+
+Not copied from Ruchkar Katta: its `data/` files, food photos, logo, QR code image, phone, address, email, social links, hours and site URL.
+
+**Dish photos:** every dish already points to `assets/menu/<dish-id>.jpg` (full list in `assets/menu/PHOTO-FILENAMES.txt`). Until a photo is uploaded with that exact name, the card shows a placeholder with the dish's first letter. Upload photos to `assets/menu/` on GitHub with those names and they appear automatically; no code or JSON edits needed. Use landscape 4:3, about 800×600, under 150 KB each. If a photo is a stock image rather than the dhaba's own dish, label it as representational.
 
 ---
 
-## Run it locally
+## Items to confirm with the client
 
-Browsers block JavaScript from reading JSON files when you double-click `index.html` (a `file://` page).
-The page detects this and shows instructions. Start any tiny static server in the project folder instead:
+Until confirmed, these are shown exactly as printed.
+
+1. **पनीर क्रेश — ₹200**: second word is unclear in the photo. Confirm the spelling (English shown as "Paneer Kresh").
+2. **काजू करी (sweet) — ₹160**: "(sweet)" is mostly hidden by glare. Confirm.
+3. **Two-price items** (`450/270`: स्पे पनीर मालवणी, पनीर हंडी, स्पे व्हेज मालवणी, व्हेज हंडी; `100/50`: प्लेन राईस, जिरा राईस). Ask what the two prices mean (for example full/half). If confirmed, switch them to `variations` so each price gets a label.
+4. **"स्पे"** on 3 items: keep the abbreviation or write "स्पेशल"?
+5. **"वेळ- 11:11"** on the menu: opening time, hours, or branding? Opening hours are empty, so no Open/Closed label shows yet.
+6. **Spellings**: the menu uses both मसूरा/मसुरा and दाल/डाल. Kept as printed.
+7. **Location link** `https://share.google/AtnjZuBJCP1YNddHe` is used for the Location button. Open it on a phone and confirm it is the dhaba's Google listing.
+8. **Not yet provided**: address, opening hours, email, Swiggy/Zomato links (both logos are on the printed menu), published site URL.
+9. **Availability**: every dish is marked available (template default), so the dish popup says "Available today". Set `"isAvailable": false` on any dish that is not served.
+
+Category grouping (मसूर स्पेशल, पनीर, व्हेज भाज्या, डाल, भात, रोटी) was chosen by me; the printed menu has no categories. Rename or regroup freely in `data/menu.json`.
+
+---
+
+## Test locally
+
+The menu loads JSON with `fetch`, so it needs a small local server (double-clicking `index.html` shows an error).
 
 ```bash
-# Python (already installed on most computers)
+cd Shree-Shivneri-Dhaba
 python -m http.server 8000
-# then open http://localhost:8000
-
-# or Node.js
-npx serve .
 ```
 
-In VS Code, the *Live Server* extension also works.
+Open http://localhost:8000.
+
+To test on your phone before publishing: connect the phone to the same Wi-Fi, find your computer's IP (`ipconfig` on Windows), and open `http://<your-ip>:8000` on the phone.
 
 ---
 
-## Customize the restaurant
+## Deploy to GitHub Pages (new repository)
 
-Edit `data/restaurant.json`:
+Do this in a **new** repository. Do not push into the Ruchkar Katta repository.
 
-```json
-{
-  "name": "Hotel Shivneri",
-  "tagline": "Authentic Taste Since 1995",
-  "logo": "assets/logo/logo.svg",
-  "phone": "+919876543210",
-  "whatsapp": "+919876543210",
-  "whatsappMessage": "Hello! I saw your menu and would like to know more.",
-  "address": "Shivneri Complex, College Road, Belagavi, Karnataka 590001",
-  "googleMapsUrl": "https://maps.google.com/?q=Belagavi+Karnataka",
-  "instagram": "",
-  "facebook": "",
-  "website": "",
-  "currency": "₹",
-  "timezone": "Asia/Kolkata",
-  "openingHours": [
-    { "day": "Monday", "open": "07:00", "close": "22:30" }
-  ],
-  "siteUrl": "https://sagarpatil199.github.io/hotel-shivneri-menu/",
-  "theme": { "primary": "#8B0000", "secondary": "#F5E6C8" }
-}
-```
+1. On github.com click **New repository**.
+   - Name: `Shree-Shivneri-Dhaba` (any name works; it becomes part of the URL)
+   - Visibility: **Public**
+   - Do not add a README (this project has one)
+2. Upload the files. Either:
+   - **Browser:** open the new repo → **Add file → Upload files** → drag in the *contents* of this folder (including `.nojekyll`) → **Commit changes**. On Windows, hidden `.nojekyll` may not drag in; if so, create it on GitHub with **Add file → Create new file**, name `.nojekyll`, leave it empty.
+   - **Git:**
+     ```bash
+     cd Shree-Shivneri-Dhaba
+     git init
+     git add .
+     git commit -m "Shree Shivneri Dhaba QR menu"
+     git branch -M main
+     git remote add origin https://github.com/<your-username>/Shree-Shivneri-Dhaba.git
+     git push -u origin main
+     ```
+3. In the repo go to **Settings → Pages**. Under **Build and deployment**, choose **Source: Deploy from a branch**, branch **main**, folder **/ (root)**, and save.
+4. Wait 1–2 minutes. The address appears at the top of the Pages settings, normally
+   `https://<your-username>.github.io/Shree-Shivneri-Dhaba/`.
+5. Open that address on a phone and check it (checklist below).
+6. Put the confirmed address into `siteUrl` in `data/restaurant.json` and commit. This sets the link-preview and Google URL.
 
-Empty values (`""`) hide the matching button or line. The full field list, with examples for every
-change a restaurant owner typically asks for, is in [`docs/CUSTOMER_SETUP.md`](docs/CUSTOMER_SETUP.md).
-
-## Customize the menu
-
-Edit `data/menu.json`. Each category has `items`; each item looks like:
-
-```json
-{
-  "id": "chicken-biryani",
-  "name": "Chicken Biryani",
-  "description": "Special aromatic chicken biryani cooked on dum with saffron.",
-  "price": 180,
-  "image": "assets/menu/chicken-biryani.jpg",
-  "isVeg": false,
-  "isAvailable": true,
-  "isBestseller": true,
-  "isNew": false,
-  "spiceLevel": 2,
-  "displayOrder": 1
-}
-```
-
-Optional extras: `"offerPrice": 160, "offerLabel": "Today's Special"`,
-`"variations": [{ "name": "Half", "price": 120 }, { "name": "Full", "price": 180 }]`,
-and `"isVisible": false` to hide an item or category without deleting it.
-
-Set `"isAvailable": false` to show a dish as **Currently Unavailable** instead of removing it.
-
-## Replace images
-
-- Put photos in `assets/menu/` and reference them from `menu.json` (`"image": "assets/menu/name.jpg"`).
-- Recommended: **4:3 landscape, ~800×600 px, JPG/WebP, under 150 KB** (compress with <https://squoosh.app>).
-- Use lowercase file names with dashes; GitHub Pages is case-sensitive.
-- `"image": ""` gives a clean text-only card (the demo *Beverages* category shows this).
-- Replace the logo in `assets/logo/` and update `"logo"` in `restaurant.json` (square, ≥300 px).
-
-The demo images are original illustrated SVG placeholders created for this template. They contain no
-third-party or copyrighted photos. Replace them with each restaurant's own photos.
+All paths in the project are relative, so it works at that sub-folder address without any base-path settings.
 
 ---
 
-## Deploy to GitHub Pages
+## Create the QR code (only after the site is live)
 
-1. Push the repository to GitHub.
-2. Open the repository → **Settings** → **Pages**.
-3. Under **Build and deployment**, set **Source** to *Deploy from a branch*, choose branch **`main`** and
-   folder **`/ (root)`**, then **Save**.
-4. After 1–2 minutes the site is live at `https://USERNAME.github.io/REPOSITORY/`
-   (the **Actions** tab shows progress).
-5. Put that address into `"siteUrl"` in `data/restaurant.json` (used for the canonical link, link
-   previews and Google).
+1. Copy the **final live address** from step 4 above, and confirm it opens on mobile data (not just Wi-Fi).
+2. Make the QR from that exact address (for example with a free generator such as qr-code-generator.com or the QR option in Chrome's share menu). Use a **static** QR that encodes the URL directly, not a "dynamic" QR that redirects through a third party.
+3. Download a high-resolution PNG or SVG for printing.
+4. Scan the printed proof with at least two phones before printing in bulk.
 
-Every later commit to `main` republishes the site automatically.
-
-> Repositories must be **public** for GitHub Pages on a free GitHub account.
-
-### Custom domain (optional)
-
-To serve a menu at e.g. `menu.hotelshivneri.com`: Settings → Pages → *Custom domain*, then add the DNS
-record GitHub shows. Everything keeps working because all paths are relative.
+The QR never needs to change: menu and price edits update the same address.
 
 ---
 
-## Create the QR code
+## Mobile and QR testing checklist
 
-The website does **not** generate QR codes. Create one separately for the restaurant's GitHub Pages URL:
+**QR**
+- [ ] QR scans with Android camera and iPhone camera
+- [ ] It opens the Shree Shivneri address, not Ruchkar Katta
+- [ ] Works on mobile data with Wi-Fi off
+- [ ] Printed QR scans from about 30 cm, in normal restaurant light
 
-```
-https://sagarpatil199.github.io/hotel-shivneri-menu/
-```
+**Page**
+- [ ] Logo, "श्री शिवनेरी ढाबा", "SHREE SHIVNERI DHABA" and "Parcel Seva" show correctly
+- [ ] Marathi text renders cleanly (no boxes or broken letters)
+- [ ] Announcement strip scrolls smoothly and shows all three messages
+- [ ] All 6 category tabs work and highlight while scrolling
+- [ ] All 31 dishes appear, with prices matching the printed menu
+- [ ] `450/270` and `100/50` prices show exactly as printed
+- [ ] Every dish photo matches its dish name (no placeholder letters left)
+- [ ] Search works for "paneer", "पनीर", "dal", "malvani"
+- [ ] Tapping a dish opens its details; close button and back gesture close it
+- [ ] No sideways scrolling on a small phone
 
-1. Open the site on your phone first and confirm it works.
-2. Generate a QR code for that exact URL with any free generator, for example:
-   - Google Chrome: open the site → **Share** → **QR code** → *Download*
-   - <https://www.qrcode-monkey.com> or <https://goqr.me> (download **SVG** or high-resolution PNG)
-3. Use a **static** QR code (the URL is encoded directly). Avoid "dynamic QR" services: they redirect
-   through someone else's server and can stop working if a subscription ends.
-4. Test-scan the printed QR with both an Android phone and an iPhone before printing in bulk.
-5. Print tips: at least **3 × 3 cm** on table tents (bigger for wall posters), dark code on a light
-   background, keep the quiet margin around it, and add a short line like *"Scan for menu"*.
+**Buttons**
+- [ ] **Call** opens the dialler with 7079611555
+- [ ] **WhatsApp** opens a chat with 7079611555 with the greeting pre-filled
+- [ ] **Location** opens the dhaba's Google listing
+- [ ] **Instagram** (footer) opens @shri_shivneri_dhaba_parcel_
 
-Because the URL never changes, **the QR code never needs to be reprinted**, even when prices, dishes or
-availability change.
-
----
-
-## Create a new restaurant from this template
-
-### Option A: GitHub template (recommended)
-
-1. One time: in this repository open **Settings** → tick **Template repository**.
-2. Click **Use this template** → **Create a new repository**.
-3. Name it after the customer, e.g. `cafe-sunrise-menu`, make it **Public**, create it.
-4. In the new repository edit:
-   - `data/restaurant.json`: name, tagline, phone, WhatsApp, address, maps link, hours, `siteUrl`, colours
-   - `data/menu.json`: their categories and dishes
-   - `assets/logo/`: their logo
-   - `assets/menu/`: their food photos (delete the demo SVGs you no longer use)
-5. Enable GitHub Pages (see above) → open `https://USERNAME.github.io/cafe-sunrise-menu/`.
-6. Generate and print the QR code for that URL.
-7. Optional: give the owner write access (Settings → Collaborators) and send them
-   [`docs/CUSTOMER_SETUP.md`](docs/CUSTOMER_SETUP.md).
-
-### Option B: command line
-
-```bash
-git clone https://github.com/sagarpatil199/qr-menu.git cafe-sunrise-menu
-cd cafe-sunrise-menu
-rm -rf .git && git init -b main
-# edit data/ and assets/, then:
-git add . && git commit -m "Cafe Sunrise menu"
-git remote add origin https://github.com/sagarpatil199/cafe-sunrise-menu.git
-git push -u origin main
-```
-
-### New-customer checklist
-
-- [ ] `restaurant.json`: name, tagline, description, phone, WhatsApp + message, address, Google Maps link
-- [ ] Opening hours, timezone, social links, `siteUrl`
-- [ ] Theme colours (check the header and buttons look good)
-- [ ] Logo uploaded, path correct
-- [ ] Menu categories and dishes entered, prices checked with the owner
-- [ ] Photos compressed (< 150 KB each) and paths correct (no letter placeholders showing)
-- [ ] Site tested on a phone: Call, WhatsApp, Location buttons, search, filters, a dish detail
-- [ ] QR code generated, test-scanned on Android + iPhone, then printed
-
-### Updating the template code for existing customers
-
-Because customer data is isolated, a design or bug-fix improvement only touches `index.html`, `css/`,
-`js/` and `404.html`. Copy those into each customer repository; their `data/` and `assets/` stay as they are.
-
----
-
-## Technical notes
-
-- **Cache behaviour:** JSON is fetched with `cache: "no-cache"`, so diners always get the latest prices and
-  availability once GitHub Pages has published them (usually 1–2 minutes).
-- **No service worker / offline mode** on purpose: an offline cache could show yesterday's availability or
-  prices, which is worse than no menu for a restaurant. It can be added in a later phase if needed.
-- **Link previews:** WhatsApp/Facebook previews read the HTML before JavaScript runs, so they show the
-  generic title in `index.html` ("Digital Menu"). Google runs JavaScript and indexes the real restaurant
-  name, menu and JSON-LD. If a customer wants a branded WhatsApp preview, edit the `<title>` and `og:` tags
-  in their copy of `index.html` (the only optional HTML edit).
-- **Security:** all JSON text is inserted with `textContent`, never `innerHTML`, so a typo or symbol in
-  the menu can never break or inject into the page.
-- **Browser support:** current Chrome, Safari (iOS 15.4+), Firefox, Samsung Internet and Edge.
-
-## Phase 1 scope
-
-Included: the static digital menu described above.
-
-Not included (possible later phases): ordering, payments, table ordering, admin dashboard, logins,
-database/backend, inventory, WhatsApp API, SaaS billing.
-
-## License
-
-All rights reserved by the repository owner. Add a `LICENSE` file if you want to set specific terms for customers.
+**Devices**
+- [ ] Android Chrome, iPhone Safari, one tablet, one desktop browser
+- [ ] Sharing the link on WhatsApp shows the restaurant name in the preview (after `siteUrl` is set)

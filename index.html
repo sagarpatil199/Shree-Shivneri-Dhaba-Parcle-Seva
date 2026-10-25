@@ -54,9 +54,12 @@
 
   <!-- ============ HEADER ============ -->
   <header class="hero" id="top">
+    <!-- Announcement ticker: messages come from restaurant.json "announcements" -->
+    <div class="ticker" id="announcement-ticker" role="region" aria-label="Announcements" hidden></div>
     <div class="hero__inner">
       <img class="hero__logo" id="restaurant-logo" src="" alt="" width="96" height="96" hidden>
       <h1 class="hero__name" id="restaurant-name">Our Menu</h1>
+      <p class="hero__altname" id="restaurant-altname" hidden></p>
       <p class="hero__tagline" id="restaurant-tagline" hidden></p>
       <p class="hero__status" id="open-status" hidden></p>
 
@@ -152,6 +155,7 @@
       <div class="modal__body">
         <div class="modal__meta" id="modal-meta"></div>
         <h2 class="modal__title" id="modal-title"></h2>
+        <p class="modal__alt" id="modal-alt" lang="en" hidden></p>
         <p class="modal__category" id="modal-category"></p>
         <p class="modal__desc" id="modal-desc"></p>
         <div class="modal__price" id="modal-price"></div>

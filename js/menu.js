@@ -81,6 +81,8 @@
 
   function normalizeItem(raw, index, category, usedIds) {
     var name = String(raw.name || "").trim() || "Untitled item";
+    // Optional second-language name (e.g. English under a Marathi name). Shown small and searchable.
+    var nameEn = String(raw.nameEn || "").trim();
     var id = slugify(raw.id || name);
     while (usedIds[id]) id += "-" + index;
     usedIds[id] = true;
@@ -102,8 +104,11 @@
     var item = {
       id: id,
       name: name,
+      nameEn: nameEn,
       description: String(raw.description || "").trim(),
       price: price,
+      // Free-text price shown exactly as printed (e.g. "450/270"). Used instead of "price" when set.
+      priceText: String(raw.priceText || "").trim(),
       offerPrice: offerPrice,
       offerLabel: String(raw.offerLabel || "").trim(),
       image: String(raw.image || "").trim(),
@@ -115,11 +120,12 @@
       variations: variations,
       categoryId: category.id,
       categoryName: category.name,
+      subcategory: String(raw.subcategory || "").trim(),
       _order: toNumber(raw.displayOrder) === null ? Infinity : toNumber(raw.displayOrder),
       _index: index
     };
 
-    item._search = searchText([item.name, item.description, category.name, item.offerLabel]
+    item._search = searchText([item.name, item.nameEn, item.priceText, item.description, category.name, item.subcategory, item.offerLabel]
       .concat(variations.map(function (v) { return v.name; }))
       .join(" "));
 

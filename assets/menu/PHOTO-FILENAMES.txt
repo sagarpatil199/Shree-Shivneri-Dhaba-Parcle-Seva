@@ -1,0 +1,46 @@
+Put dish photos in this folder with exactly these names (lowercase, .jpg).
+Recommended: landscape 4:3, about 800x600, under 150 KB each.
+A dish whose photo is missing shows a placeholder until the file is added.
+
+मसूर स्पेशल (Masoor specials)
+  aakha-masoora.jpg   <- आख्खा मसूरा  (Aakha Masoora)
+  special-lasun-masura.jpg   <- स्पे लसूण मसुरा  (Spl. Lasun Masura)
+  ghee-masoora.jpg   <- घी मसूरा  (Ghee Masoora)
+
+पनीर (Paneer)
+  matar-paneer-masala.jpg   <- मटर पनीर मसाला  (Matar Paneer Masala)
+  butter-paneer-masala.jpg   <- बटर पनीर मसाला  (Butter Paneer Masala)
+  paneer-masala.jpg   <- पनीर मसाला  (Paneer Masala)
+  paneer-tikka-masala-sweet.jpg   <- पनीर टिक्का मसाला (sweet)  (Paneer Tikka Masala (sweet))
+  special-paneer-malvani.jpg   <- स्पे पनीर मालवणी  (Spl. Paneer Malvani)
+  paneer-handi.jpg   <- पनीर हंडी  (Paneer Handi)
+  paneer-kresh.jpg   <- पनीर क्रेश  (Paneer Kresh)
+  kaju-paneer.jpg   <- काजू पनीर  (Kaju Paneer)
+
+व्हेज भाज्या (Veg curries)
+  matar-masala.jpg   <- मटर मसाला  (Matar Masala)
+  kaju-masala.jpg   <- काजू मसाला  (Kaju Masala)
+  kaju-curry-sweet.jpg   <- काजू करी (sweet)  (Kaju Curry (sweet))
+  veg-kolhapuri.jpg   <- व्हेज कोल्हापुरी  (Veg Kolhapuri)
+  mix-veg.jpg   <- मिक्स व्हेज  (Mix Veg)
+  special-veg-malvani.jpg   <- स्पे व्हेज मालवणी  (Spl. Veg Malvani)
+  veg-kadhai.jpg   <- व्हेज कढाई  (Veg Kadhai)
+  veg-handi.jpg   <- व्हेज हंडी  (Veg Handi)
+  special-veg-malvani-rassa.jpg   <- स्पे व्हेज मालवणी रस्सा  (Spl. Veg Malvani Rassa)
+
+डाल (Dal)
+  dal-fry.jpg   <- डाल फ्राय  (Dal Fry)
+  dal-tadka.jpg   <- डाल तडका  (Dal Tadka)
+  dal-kolhapuri.jpg   <- डाल कोल्हापुरी  (Dal Kolhapuri)
+
+भात (Rice)
+  veg-pulao.jpg   <- व्हेज पुलाव  (Veg Pulao)
+  veg-biryani.jpg   <- व्हेज बिर्याणी  (Veg Biryani)
+  dal-khichdi.jpg   <- दाल खिचडी  (Dal Khichdi)
+  plain-rice.jpg   <- प्लेन राईस  (Plain Rice)
+  jeera-rice.jpg   <- जिरा राईस  (Jeera Rice)
+
+रोटी (Breads)
+  roti-chapati.jpg   <- रोटी /चपाती  (Roti / Chapati)
+  butter-roti.jpg   <- बटर रोटी  (Butter Roti)
+  butter-naan.jpg   <- बटर नान  (Butter Naan)

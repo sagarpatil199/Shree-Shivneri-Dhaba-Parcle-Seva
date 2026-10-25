@@ -9,6 +9,8 @@
   var QRMenu = (window.QRMenu = window.QRMenu || {});
   var Menu = QRMenu.Menu;
 
+  var contentLang = ""; // e.g. "mr" when dish names are in Marathi (restaurant.json "contentLang")
+
   var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   var SPICE_LABELS = ["Not spicy", "Mild", "Medium spicy", "Very spicy"];
 
@@ -76,7 +78,12 @@
       logo.addEventListener("error", function () { logo.hidden = true; });
     }
 
-    $("restaurant-name").textContent = r.name || "Our Menu";
+    var nameNode = $("restaurant-name");
+    nameNode.textContent = r.name || "Our Menu";
+    if (r.contentLang) nameNode.setAttribute("lang", r.contentLang);
+
+    var alt = $("restaurant-altname");
+    if (alt && r.altName) { alt.textContent = r.altName; alt.hidden = false; }
 
     var tagline = $("restaurant-tagline");
     if (r.tagline) { tagline.textContent = r.tagline; tagline.hidden = false; }
@@ -101,6 +108,39 @@
 
     var notice = $("restaurant-notice");
     if (r.notice) { notice.textContent = r.notice; notice.hidden = false; }
+  }
+
+  /* ---------- Announcement ticker ---------- */
+
+  /**
+   * Thin scrolling strip at the top of the header. Messages come from
+   * restaurant.json "announcements" (array of strings). The list is rendered
+   * twice so the loop is seamless; the copy is hidden from screen readers.
+   */
+  function renderTicker(r) {
+    var bar = $("announcement-ticker");
+    if (!bar) return;
+    var messages = (Array.isArray(r.announcements) ? r.announcements : [])
+      .map(function (m) { return String(m || "").trim(); })
+      .filter(Boolean);
+    if (!messages.length) return;
+
+    function group(hidden) {
+      var ul = el("ul", { class: "ticker__group", "aria-hidden": hidden ? "true" : null });
+      messages.forEach(function (m) { ul.appendChild(el("li", { class: "ticker__item", text: m })); });
+      return ul;
+    }
+
+    var track = el("div", { class: "ticker__track" }, [group(false), group(true)]);
+    var chars = messages.join("").length;
+    // Roughly constant reading speed whatever the message length.
+    track.style.setProperty("--ticker-duration", Math.max(16, Math.round(chars * 0.32)) + "s");
+
+    bar.textContent = "";
+    bar.appendChild(track);
+    bar.hidden = false;
+    var hero = bar.closest(".hero");
+    if (hero) hero.classList.add("has-ticker");
   }
 
   /* ---------- Opening hours ---------- */
@@ -297,6 +337,10 @@
       wrap.appendChild(ul);
       return wrap;
     }
+    if (item.priceText) {
+      wrap.appendChild(el("span", { class: "price", text: (currency || "") + item.priceText }));
+      return wrap;
+    }
     if (item.offerPrice !== null) {
       wrap.appendChild(el("span", { class: "price price--offer", text: Menu.formatPrice(item.offerPrice, currency) }));
       wrap.appendChild(el("s", { class: "price price--old", "aria-label": "Regular price " + Menu.formatPrice(item.price, currency), text: Menu.formatPrice(item.price, currency) }));
@@ -346,10 +390,12 @@
         class: "card__open",
         "data-id": item.id,
         "aria-haspopup": "dialog",
-        "aria-label": item.name + (unavailable ? ", currently unavailable" : "") + ". View details"
+        "aria-label": item.name + (item.nameEn ? " (" + item.nameEn + ")" : "") + (unavailable ? ", currently unavailable" : "") + ". View details"
       }, [item.name])
     ]);
+    if (contentLang) title.setAttribute("lang", contentLang);
     body.appendChild(title);
+    if (item.nameEn) body.appendChild(el("p", { class: "card__alt", lang: "en", text: item.nameEn }));
     if (item.description) body.appendChild(el("p", { class: "card__desc", text: item.description }));
     body.appendChild(priceBlock(item, currency, "card__price"));
     if (unavailable) body.appendChild(el("p", { class: "card__status", text: "Currently Unavailable" }));
@@ -363,21 +409,40 @@
     return article;
   }
 
-  function renderMenu(categories, currency) {
+  function renderMenu(categories, currency, lang) {
+    contentLang = lang || "";
     var root = $("menu-sections");
     var frag = document.createDocumentFragment();
     categories.forEach(function (cat) {
       var headingId = "cat-" + cat.id + "-title";
       var section = el("section", { class: "category", id: "cat-" + cat.id, "data-category": cat.id, "aria-labelledby": headingId });
       var head = el("header", { class: "category__head" }, [
-        el("h2", { class: "category__title", id: headingId, text: cat.name }),
+        el("h2", { class: "category__title", id: headingId, lang: contentLang || null, text: cat.name }),
         el("span", { class: "category__count", "data-count": "", text: cat.items.length + " items" })
       ]);
       section.appendChild(head);
       if (cat.description) section.appendChild(el("p", { class: "category__desc", text: cat.description }));
-      var grid = el("div", { class: "grid" });
-      cat.items.forEach(function (item) { grid.appendChild(card(item, currency)); });
-      section.appendChild(grid);
+      // Group consecutive dishes by sub title (e.g. "Veg Starters"), keeping the menu order.
+      var groups = [];
+      cat.items.forEach(function (item) {
+        var last = groups[groups.length - 1];
+        if (!last || last.name !== item.subcategory) { last = { name: item.subcategory, items: [] }; groups.push(last); }
+        last.items.push(item);
+      });
+      groups.forEach(function (group, gi) {
+        var grid = el("div", { class: "grid" });
+        group.items.forEach(function (item) { grid.appendChild(card(item, currency)); });
+        if (!group.name) { section.appendChild(grid); return; }
+        var subId = headingId.replace(/-title$/, "") + "-sub-" + gi;
+        var sub = el("div", { class: "subcat", "data-subcat": "", role: "group", "aria-labelledby": subId }, [
+          el("h3", { class: "subcat__title", id: subId }, [
+            el("span", { text: group.name }),
+            el("span", { class: "subcat__count", "data-subcount": "", text: String(group.items.length) })
+          ]),
+          grid
+        ]);
+        section.appendChild(sub);
+      });
       frag.appendChild(section);
     });
     root.textContent = "";
@@ -389,7 +454,7 @@
     list.textContent = "";
     categories.forEach(function (cat) {
       list.appendChild(el("li", { "data-category": cat.id }, [
-        el("a", { class: "catnav__link", href: "#cat-" + cat.id, "data-category": cat.id, text: cat.name })
+        el("a", { class: "catnav__link", href: "#cat-" + cat.id, "data-category": cat.id, lang: contentLang || null, text: cat.name })
       ]));
     });
   }
@@ -406,6 +471,12 @@
         var node = section.querySelector('.card[data-id="' + item.id + '"]');
         node.hidden = !show;
         if (show) visible++;
+      });
+      Array.prototype.forEach.call(section.querySelectorAll("[data-subcat]"), function (sub) {
+        var shown = sub.querySelectorAll(".card:not([hidden])").length;
+        sub.hidden = shown === 0;
+        var badge = sub.querySelector("[data-subcount]");
+        if (badge) badge.textContent = String(shown);
       });
       section.hidden = visible === 0;
       if (navItem) navItem.hidden = visible === 0;
@@ -440,7 +511,11 @@
       .concat(badges(item))
       .forEach(function (n) { if (n) meta.appendChild(n); });
 
-    $("modal-title").textContent = item.name;
+    var modalTitle = $("modal-title");
+    modalTitle.textContent = item.name;
+    if (contentLang) modalTitle.setAttribute("lang", contentLang);
+    var modalAlt = $("modal-alt");
+    if (modalAlt) { modalAlt.textContent = item.nameEn; modalAlt.hidden = !item.nameEn; }
     $("modal-category").textContent = item.categoryName;
     var desc = $("modal-desc");
     desc.textContent = item.description;
@@ -481,6 +556,7 @@
     el: el,
     links: links,
     renderHeader: renderHeader,
+    renderTicker: renderTicker,
     renderFooter: renderFooter,
     renderMenu: renderMenu,
     renderCategoryNav: renderCategoryNav,

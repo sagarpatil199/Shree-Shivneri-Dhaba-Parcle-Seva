@@ -196,6 +196,7 @@ What each part means:
 | `isNew` | `true` / `false` | Shows the New badge. |
 | `spiceLevel` | `0` to `3` | Number of chillies shown. `0` = none. |
 | `displayOrder` | `1`, `2`, `3`… | Order inside the category (1 shows first). |
+| `subcategory` | `"Veg Starters"` | Optional sub title shown inside the category. Dishes with the same `subcategory` sit together under one heading, in `displayOrder`. Leave it out for a plain list. |
 
 **Only `name` is truly required.** If you leave out a field, a sensible default is used
 (available = yes, bestseller/new = no, spice = 0).
@@ -440,6 +441,7 @@ Any link left as `""` is hidden.
 | Field | Example | Notes |
 | --- | --- | --- |
 | `name` | `"Hotel Shivneri"` | Required. |
+| `altName` | `"Shree Shivneri Dhaba"` | Optional second name under the main name (e.g. English under Marathi). |
 | `tagline` | `"Authentic Taste Since 1995"` | Short line under the name. |
 | `description` | `"Family restaurant in Belagavi…"` | Used by Google and link previews. |
 | `logo` | `"assets/logo/logo.svg"` | Square image. |
@@ -454,6 +456,7 @@ Any link left as `""` is hidden.
 | `currency` | `"₹"` | Shown before every price. |
 | `cuisine` | `["South Indian", "Chinese"]` | For Google. |
 | `priceRange` | `"₹₹"` | For Google. |
+| `announcements` | `["🙏 Welcome!", "🍛 Explore our menu."]` | Messages in the thin scrolling strip at the top. Empty list `[]` hides the strip. |
 | `notice` | `"…"` | Line under the header. |
 | `footerNote` | `"…"` | Small print at the bottom. |
 | `timezone` | `"Asia/Kolkata"` | For the Open now / Closed now label. |
@@ -462,6 +465,8 @@ Any link left as `""` is hidden.
 | `theme.primary`, `theme.secondary` | `"#8B0000"` | Brand colours. |
 | `theme.accent` | `"#C8932D"` | Optional focus-ring colour. |
 | `theme.headingFont` | `"sans"` | Optional modern headings. |
+| `theme.logoShape` | `"rounded"` | Optional. Shows the logo in a rounded white tile instead of a circle (for square/octagonal badge logos). |
+| `contentLang` | `"mr"` | Optional. Language of the dish and restaurant names (`"mr"` = Marathi), so phones pick the right font and screen readers read them correctly. |
 
 ### `data/menu.json`: category
 
@@ -481,7 +486,9 @@ Any link left as `""` is hidden.
 | `id` | recommended | made from the name |
 | `name` | yes | |
 | `description` | no | none |
-| `price` | yes (unless `variations`) | |
+| `price` | yes (unless `variations` or `priceText`) | |
+| `priceText` | no | Price shown exactly as written, e.g. `"450/270"`. Use instead of `price` when the printed menu shows more than one number. |
+| `nameEn` | no | Second name shown small under `name` and included in search (e.g. `"Paneer Handi"` under `"पनीर हंडी"`). |
 | `image` | no | text-only card |
 | `isVeg` | recommended | no veg/non-veg mark |
 | `isAvailable` | no | `true` |

@@ -83,6 +83,8 @@
 
     document.documentElement.classList.toggle("theme-light-primary", onPrimary !== "#ffffff");
     if (theme.headingFont === "sans") document.documentElement.classList.add("font-sans");
+    // "rounded" suits square/octagonal badge logos that should not sit in a circle.
+    if (theme.logoShape === "rounded") document.documentElement.classList.add("logo-rounded");
 
     var meta = document.querySelector('meta[name="theme-color"]');
     if (meta) meta.setAttribute("content", rgbToHex(primary));
@@ -187,6 +189,25 @@
       chip.setAttribute("aria-pressed", active ? "true" : "false");
     });
     update();
+  }
+
+  /**
+   * Hide filter chips that would not change the list (no matching dish, or every
+   * dish matches, e.g. "Non-Veg" on a pure-veg menu). Hide the row if only "All" is left.
+   */
+  function pruneFilters() {
+    var items = [];
+    state.categories.forEach(function (c) { items = items.concat(c.items); });
+    var chips = document.querySelectorAll("#filters .chip");
+    var shown = 0;
+    Array.prototype.forEach.call(chips, function (chip) {
+      var f = chip.getAttribute("data-filter");
+      if (f === "all") return;
+      var n = items.filter(function (i) { return Menu.matches(i, "", f); }).length;
+      chip.hidden = n === 0 || n === items.length;
+      if (!chip.hidden) shown++;
+    });
+    $("filters").hidden = shown === 0;
   }
 
   function bindSearchAndFilters() {
@@ -378,10 +399,12 @@
 
         applyTheme(restaurant.theme);
         applySeo(restaurant, menu.categories);
+        UI.renderTicker(restaurant);
         UI.renderHeader(restaurant);
         UI.renderFooter(restaurant);
+        UI.renderMenu(menu.categories, restaurant.currency || "", restaurant.contentLang);
         UI.renderCategoryNav(menu.categories);
-        UI.renderMenu(menu.categories, restaurant.currency || "");
+        pruneFilters();
 
         $("loader").hidden = true;
         document.body.classList.remove("is-loading");
