@@ -30,7 +30,8 @@
   "announcements": [
     "🙏 Welcome to Shree Shivneri Dhaba!",
     "🍛 Explore our menu.",
-    "📞 For enquiries, call 7079611555."
+    "📞 For enquiries, call 7079611555.",
+    "💚 Pure Veg "
   ],
   "notice": "शुद्ध शाकाहारी · आख्खा मसुर स्पेशल",
   "footerNote": "सर्वोत्तम दर्जा... हाच आमचा ध्यास...",
@@ -38,9 +39,9 @@
   "openingHours": [],
   "siteUrl": "",
   "theme": {
-    "primary": "#8B0000",
-    "secondary": "#FFF0C9",
-    "accent": "#C9A227",
+    "primary": "#8B3E00",
+    "secondary": "#FFF3E0",
+    "accent": "#FF8C00",
     "logoShape": "rounded"
   },
   "contentLang": "mr"
