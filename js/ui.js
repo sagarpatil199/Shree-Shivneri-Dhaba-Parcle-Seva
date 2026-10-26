@@ -91,19 +91,34 @@
     var l = links(r);
     var actions = $("contact-actions");
     actions.textContent = "";
-    [
-      { href: l.call, icon: "phone", label: "Call", aria: "Call " + r.name },
-      { href: l.whatsapp, icon: "whatsapp", label: "WhatsApp", aria: "Message " + r.name + " on WhatsApp", external: true },
-      { href: l.maps, icon: "pin", label: "Location", aria: "Open " + r.name + " in Google Maps", external: true }
-    ].forEach(function (a) {
-      if (!a.href) return;
+    var rating = Number(r.googleRating) || 0;
+    // Every button the header can show. restaurant.json "headerActions" picks which
+    // ones appear and in what order; buttons without a link are skipped.
+    var available = {
+      call: { href: l.call, icon: "phone", label: "Call", aria: "Call " + r.name },
+      whatsapp: { href: l.whatsapp, icon: "whatsapp", label: "WhatsApp", aria: "Message " + r.name + " on WhatsApp", external: true },
+      location: { href: l.maps, icon: "pin", label: "Location", aria: "Open " + r.name + " in Google Maps", external: true },
+      instagram: { href: r.instagram, icon: "instagram", label: "Instagram", aria: r.name + " on Instagram", external: true },
+      facebook: { href: r.facebook, icon: "facebook", label: "Facebook", aria: r.name + " on Facebook", external: true },
+      review: {
+        href: r.googleReviewUrl, label: "Google Review", external: true,
+        visual: rating ? stars(rating) : icon("star"),
+        aria: (rating ? r.name + " is rated " + rating + " out of 5 on Google. " : "") + "Read or write a Google review"
+      }
+    };
+    var order = Array.isArray(r.headerActions) && r.headerActions.length
+      ? r.headerActions
+      : ["call", "whatsapp", "location"];
+    order.forEach(function (key) {
+      var a = available[String(key).toLowerCase()];
+      if (!a || !a.href) return;
       actions.appendChild(el("a", {
-        class: "action action--" + a.icon,
+        class: "action action--" + key,
         href: a.href,
         "aria-label": a.aria,
         target: a.external ? "_blank" : null,
         rel: a.external ? "noopener" : null
-      }, [icon(a.icon), el("span", { text: a.label })]));
+      }, [a.visual || icon(a.icon), el("span", { text: a.label })]));
     });
 
     var notice = $("restaurant-notice");
@@ -141,6 +156,17 @@
     bar.hidden = false;
     var hero = bar.closest(".hero");
     if (hero) hero.classList.add("has-ticker");
+  }
+
+  /** Five stars for a 0–5 rating; a fraction of 0.25–0.74 shows a half star. */
+  function stars(rating) {
+    var wrap = el("span", { class: "stars", "aria-hidden": "true" });
+    for (var i = 1; i <= 5; i++) {
+      var left = rating - (i - 1);
+      var kind = left >= 0.75 ? "star" : left >= 0.25 ? "star-half" : "star-empty";
+      wrap.appendChild(icon(kind));
+    }
+    return wrap;
   }
 
   /* ---------- Opening hours ---------- */
