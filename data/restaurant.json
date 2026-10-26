@@ -9,7 +9,7 @@
   "whatsapp": "+91 7079611555",
   "whatsappMessage": "नमस्कार श्री शिवनेरी ढाबा! I saw your digital menu and would like to know more.",
   "email": "",
-  "address": "",
+  "address": "Yasha-Sankul, Sadichha Colony, New Chaitanya Colony, Vidyanagar, Karad, Saidapur, Maharashtra 415124",
   "googleMapsUrl": "https://share.google/AtnjZuBJCP1YNddHe",
   "googleReviewUrl": "https://www.google.com/search?sca_esv=b8c88878ed516ca7&hl=en-GB&rlz=1CDGOYI_enIN1046IN1046&cs=1&sxsrf=APpeQnsL4DhtfOcFy-oQv0Miy48OCSsQbQ:1792995229398&q=Shri+Shivneri+Dhaba+Parcle&si=APenkKm7iecQ4G6P-TsbSMFKIQtv3EFIqRAFw-i8uEbk55Z-_wqMGMrfHB6KjBLTnFBP9B5NNfz-lmbWljgCH4YrCuMxiLOsov8v_A0LlMjUhR-f-WL4XP4ln9CW_dChFyqom5bza1k7TBGAWcb5cethjY0yIRuz-nQigWAHZXrQVyfY_nGpNhA%3D&sa=X&ved=2ahUKEwjooe3dg9eXAxVLbGwGHQD3DpAQrrQLegQIHhAA&biw=1280&bih=593&dpr=1.5",
   "googleRating": 4.2,
@@ -36,12 +36,20 @@
   "notice": "शुद्ध शाकाहारी · आख्खा मसुर स्पेशल",
   "footerNote": "सर्वोत्तम दर्जा... हाच आमचा ध्यास...",
   "timezone": "Asia/Kolkata",
-  "openingHours": [],
+  "openingHours": [
+  { "day": "Monday", "open": "11:00", "close": "23:00" },
+  { "day": "Tuesday", "open": "11:00", "close": "23:00" },
+  { "day": "Wednesday", "open": "11:00", "close": "23:00" },
+  { "day": "Thursday", "open": "11:00", "close": "23:00" },
+  { "day": "Friday", "open": "11:00", "close": "23:00" },
+  { "day": "Saturday", "open": "11:00", "close": "23:00" },
+  { "day": "Sunday", "open": "11:00", "close": "23:00" }
+],
   "siteUrl": "",
   "theme": {
-    "primary": "#8B3E00",
-    "secondary": "#FFF3E0",
-    "accent": "#FF8C00",
+    "primary": "#FF6D00",
+    "secondary": "#FFF0C9",
+    "accent": "#C9A227",
     "logoShape": "rounded"
   },
   "contentLang": "mr"
