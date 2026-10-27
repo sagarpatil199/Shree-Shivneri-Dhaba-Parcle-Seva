@@ -230,6 +230,40 @@ svg { width: 1em; height: 1em; flex-shrink: 0; }
 .action:active { transform: scale(0.97); }
 .action:focus-visible { outline-color: #fff; }
 
+/* Location pin in the header's top-right corner */
+.hero__corner {
+  position: absolute;
+  z-index: 2;
+  top: calc(16px + env(safe-area-inset-top));
+  right: var(--gutter);
+}
+.hero.has-ticker .hero__corner { top: calc(31px + 14px + env(safe-area-inset-top)); }
+.hero__corner-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid color-mix(in srgb, var(--accent) 70%, transparent);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+  text-decoration: none;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: background 0.2s, transform 0.15s;
+}
+.hero__corner-btn svg { width: 22px; height: 22px; color: var(--accent); color: color-mix(in srgb, var(--accent) 75%, #fff); }
+.hero__corner-btn:hover { background: rgba(255, 255, 255, 0.24); }
+.hero__corner-btn:active { transform: scale(0.94); }
+.hero__corner-btn:focus-visible { outline-color: #fff; }
+@media (max-width: 359px) { .hero__corner-btn { width: 44px; height: 44px; } .hero__corner-btn span { display: none; } }
+
 /* Google rating stars inside the review button */
 .stars { display: inline-flex; gap: 2px; height: 22px; align-items: center; color: #fbbc04; }
 .action .stars svg { width: 18px; height: 18px; }
