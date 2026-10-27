@@ -141,6 +141,43 @@
 
     var notice = $("restaurant-notice");
     if (r.notice) { notice.textContent = r.notice; notice.hidden = false; }
+
+    renderPartners(r, notice);
+  }
+
+  /**
+   * "Also available on" strip for delivery apps (restaurant.json "deliveryPartners").
+   * Each partner: { "name": "Zomato", "logo": "assets/icons/zomato.png", "url": "" }.
+   * With a url the logo is a link to the restaurant's page on that app; without one it is a plain badge.
+   * The strip is created here (no index.html change) and placed right after the notice line.
+   */
+  function renderPartners(r, after) {
+    var old = $("delivery-partners");
+    if (old) old.parentNode.removeChild(old);
+    var partners = (Array.isArray(r.deliveryPartners) ? r.deliveryPartners : [])
+      .filter(function (p) { return p && p.name && p.logo; });
+    if (!partners.length || !after) return;
+
+    var list = el("ul", { class: "partners__list" });
+    partners.forEach(function (p) {
+      var url = String(p.url || "").trim();
+      var inner = [
+        el("img", { src: p.logo, alt: "", width: 40, height: 40, loading: "lazy", decoding: "async" }),
+        el("span", { text: p.name })
+      ];
+      list.appendChild(el("li", null, [
+        url
+          ? el("a", { class: "partner", href: url, target: "_blank", rel: "noopener", "aria-label": "Order from " + r.name + " on " + p.name }, inner)
+          : el("span", { class: "partner" }, inner)
+      ]));
+    });
+
+    var label = String(r.deliveryPartnersLabel || "Also available on").trim();
+    var section = el("section", { class: "partners", id: "delivery-partners", "aria-label": label + " " + partners.map(function (p) { return p.name; }).join(", ") }, [
+      el("p", { class: "partners__label", text: label }),
+      list
+    ]);
+    after.parentNode.insertBefore(section, after.nextSibling);
   }
 
   /* ---------- Announcement ticker ---------- */
