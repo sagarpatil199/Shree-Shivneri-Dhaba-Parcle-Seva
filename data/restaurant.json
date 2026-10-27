@@ -48,8 +48,7 @@
 ],
     "deliveryPartnersLabel": "Also available on",
   "deliveryPartners": [
-    { "name": "Zomato", "logo": "assets/icons/zomato.png", "url": "" },
-    { "name": "Swiggy", "logo": "assets/icons/swiggy.png", "url": "" }
+    { "name": "Zomato", "logo": "assets/icons/zomato.png", "url": "https://www.zomato.com/karad/shri-shivneri-dhaba-karad-locality/order" }
   ],
   "siteUrl": "",
   "theme": {
