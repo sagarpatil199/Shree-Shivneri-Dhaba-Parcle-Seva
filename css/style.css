@@ -230,6 +230,51 @@ svg { width: 1em; height: 1em; flex-shrink: 0; }
 .action:active { transform: scale(0.97); }
 .action:focus-visible { outline-color: #fff; }
 
+/* "Also available on" delivery apps strip */
+.partners {
+  max-width: var(--maxw);
+  margin: 12px auto 0;
+  padding: 0 var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 12px;
+}
+.partners__label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.partners__list {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.partner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 4px 14px 4px 4px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.partner img { width: 40px; height: 40px; border-radius: 10px; }
+a.partner { transition: transform 0.15s, box-shadow 0.2s; }
+a.partner:hover { box-shadow: var(--shadow); }
+a.partner:active { transform: scale(0.97); }
+
 /* Location pin in the header's top-right corner */
 .hero__corner {
   position: absolute;
