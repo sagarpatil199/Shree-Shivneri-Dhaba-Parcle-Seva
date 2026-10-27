@@ -121,6 +121,24 @@
       }, [a.visual || icon(a.icon), el("span", { text: a.label })]));
     });
 
+    // Small round location pin in the header's top-right corner (restaurant.json "cornerLocation").
+    var corner = $("hero-corner");
+    if (corner) {
+      corner.textContent = "";
+      corner.hidden = true;
+      if (r.cornerLocation !== false && l.maps) {
+        corner.appendChild(el("a", {
+          class: "hero__corner-btn",
+          href: l.maps,
+          target: "_blank",
+          rel: "noopener",
+          "aria-label": "Open " + r.name + " location in Google Maps",
+          title: "Location"
+        }, [icon("pin"), el("span", { text: "Map" })]));
+        corner.hidden = false;
+      }
+    }
+
     var notice = $("restaurant-notice");
     if (r.notice) { notice.textContent = r.notice; notice.hidden = false; }
   }
