@@ -46,6 +46,11 @@
   { "day": "Saturday", "open": "11:00", "close": "23:00" },
   { "day": "Sunday", "open": "11:00", "close": "23:00" }
 ],
+    "deliveryPartnersLabel": "Also available on",
+  "deliveryPartners": [
+    { "name": "Zomato", "logo": "assets/icons/zomato.png", "url": "" },
+    { "name": "Swiggy", "logo": "assets/icons/swiggy.png", "url": "" }
+  ],
   "siteUrl": "",
   "theme": {
     "primary": "#8B0000",
@@ -53,5 +58,6 @@
     "accent": "#C9A227",
     "logoShape": "rounded"
   },
+  
   "contentLang": "mr"
 }
